@@ -2,8 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+/* styles.css */
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+.bg-green{
+  background-color: green;
+}
+
+.bg-red{
+  background-color: red;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Component styles */
+.bonus-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+}
+
+.bonus-header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  z-index: 5;
+  padding: 20px 0px;
+}
+
+.bonus-header-text {
+  border-radius: 10px;
+  background-color: #ffa631;
+  font-family: Inter;
+  font-weight: 500;
+  color: #ffffff;
+  padding: 15px 20px;
+  text-align: center;
+  width: 90%;
+}
+
+.bonus-list-wrapper {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.bonus-item {
+  width: 95%;
+  background-color: #ffa63191;
+  color: red;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 30px;
+}
+
+.bonus-item-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.bonus-name {
+  padding: 10px;
+  background-color: #ffa631;
+  color: #ffffff;
+  border-radius: 30px;
+}
+
+.bonus-exchange-status {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.bonus-exchange {
+  padding: 10px;
+  background-color: #ffffff;
+  color: #ffa631;
+  border-radius: 30px;
+  margin-right: 10px;
+}
+
+.bonus-status {
+  padding: 10px;
+  color: #ffffff;
+  border-radius: 30px;
+}
+
+.bonus-description {
+  width: 100%;
+  text-align: left;
+  font-weight: 500;
+  color: #000000;
+  margin: 12px 0px;
+  display: block;
+}
+
+.bonus-image-section {
+  margin-top: 6px;
+  background-color: #ffffff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  border-radius: 12px;
+}
+
+.bonus-image {
+  position: relative;
+  width: 80%;
+  height: 60%;
 }
