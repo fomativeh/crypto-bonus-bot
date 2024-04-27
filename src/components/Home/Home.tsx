@@ -29,7 +29,7 @@ const Bonus = ({
 
         <section className="w-[30%] h-full flex flex-col justify-center items-center">
             <span className="font-bold uppercase text-[14px] text-[#000] mb-[10px]">{description}</span>
-            <span className="text-[silver] text-[10px]">Use code <span className="font-bold uppercase text-[#7a7a7a]">{couponCode}</span></span>
+            <span className="text-[#9b9b9b] text-[10px]">Use code <span className="font-bold uppercase text-[#7a7a7a]">{couponCode}</span></span>
         </section>
 
         <section className="w-[30%] h-full flex justify-center items-center relative">
