@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import "../../index.css";
+import { getBonuses } from "../../apis/bonus";
 
 type BonusProps = {
   status: string;
@@ -10,7 +11,7 @@ type BonusProps = {
   bonusUrl: string;
   bonusTitle?: string;
   couponCode?: string;
-  tele: any
+  tele: any;
 };
 
 const Bonus = ({
@@ -23,19 +24,33 @@ const Bonus = ({
 }: BonusProps) => {
   return (
     <section className="my-[8px] w-full flex justify-between items-center h-[130px] shadow-c">
-        <figure className="w-[30%] h-full">
-            <img src={bannerUrl} alt={"Bonus image"} className="w-full h-full"/>
-        </figure>
+      <figure className="w-[30%] h-full">
+        <img src={bannerUrl} alt={"Bonus image"} className="w-full h-full" />
+      </figure>
 
-        <section className="w-[30%] h-full flex flex-col justify-center items-center">
-            <span className="font-bold uppercase text-[12px] text-[#000] mb-[5px] text-center">{description}</span>
-            <span className="text-[#9b9b9b] text-[10px]">Use code <span className="font-bold uppercase text-[#7a7a7a]">{couponCode}</span></span>
-        </section>
+      <section className="w-[30%] h-full flex flex-col justify-center items-center">
+        <span className="font-bold uppercase text-[12px] text-[#000] mb-[5px] text-center">
+          {description}
+        </span>
+        <span className="text-[#9b9b9b] text-[10px] text-center">
+          Use code{" "}
+          <span className="font-bold uppercase text-[#7a7a7a]">
+            {couponCode}
+          </span>
+        </span>
+      </section>
 
-        <section className="w-[30%] h-full flex justify-center items-center relative">
-            <span className="absolute top-0 right-0 bg-black text-white text-[10px] py-[5px] px-[10px]">{status}</span>
-            <span className="cursor-pointer bg-[#3bb43b] text-[#fff] font-bold text-[14px] rounded-[5px] px-[10px] py-[10px] mr-[5px]" onClick={()=>tele.openLink(bonusUrl)}>Get Bonus</span>
-        </section>
+      <section className="w-[30%] h-full flex justify-center items-center relative">
+        <span className="absolute top-0 right-0 bg-black text-white text-[10px] py-[5px] px-[10px]">
+          {status}
+        </span>
+        <span
+          className="cursor-pointer bg-[#3bb43b] text-[#fff] font-bold text-[14px] rounded-[5px] px-[10px] py-[10px] mr-[5px]"
+          onClick={() => tele.openLink(bonusUrl)}
+        >
+          Get Bonus
+        </span>
+      </section>
     </section>
   );
 };
@@ -49,83 +64,43 @@ const Home = () => {
     tele.expand();
   }, []);
 
-  const [bonusData, setBonusData] = useState([
-    {
-      name: "Gemini",
-      status: "trending",
-      bannerUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Stake-com-logo-high-res.jpg/1200px-Stake-com-logo-high-res.jpg",
-      exchange: "BTC",
-      description: "$15 BTC Bonus",
-      bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-      couponCode: "GEMINI15"
-    },
-  
-    {
-      name: "Okcoin",
-      status: "hot",
-      bannerUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVYwadP1Ws01jZ76BaPKWF9_NYAJJbXy2Z8BWmzDJAVw&s",
-      exchange: "BTC",
-      description: "$30k offer",
-      bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-      couponCode: "OKCOIN50"
-    },
+  const [bonusesData, setBonusesData] = useState<any>({});
 
-    {
-        name: "Gemini",
-        status: "new",
-        bannerUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Stake-com-logo-high-res.jpg/1200px-Stake-com-logo-high-res.jpg",
-        exchange: "BTC",
-        description: "5 BTC",
-        bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-        couponCode: "GEMINI15"
-      },
-    
-      {
-        name: "Okcoin",
-        status: "hot",
-        bannerUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVYwadP1Ws01jZ76BaPKWF9_NYAJJbXy2Z8BWmzDJAVw&s",
-        exchange: "BTC",
-        description: "$50 BTC Bonus",
-        bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-        couponCode: "OKCOIN50"
-      },
+  const loadBonuses = async () => {
+    try {
+      const bonusesRes: any = await getBonuses();
+      if (!bonusesRes?.success) {
+        // alert("An error occured.");
+      } else {
+        setBonusesData(bonusesRes.data);
+      }
+    } catch (error) {
+      console.log(error);
+      //   alert("Error loading bonuses");
+    }
+  };
 
-      {
-        name: "Gemini",
-        status: "trending",
-        bannerUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Stake-com-logo-high-res.jpg/1200px-Stake-com-logo-high-res.jpg",
-        exchange: "BTC",
-        description: "$15 BTC Bonus",
-        bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-        couponCode: "GEMINI15"
-      },
-    
-      {
-        name: "Okcoin",
-        status: "hot",
-        bannerUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVYwadP1Ws01jZ76BaPKWF9_NYAJJbXy2Z8BWmzDJAVw&s",
-        exchange: "BTC",
-        description: "$50 BTC Bonus",
-        bonusUrl: "https://moneywise.com/investing/reviews/gemini",
-        couponCode: "OKCOIN50"
-      },
+  useEffect(() => {
+    loadBonuses();
+  }, []);
 
-  ]);
-  
   return (
     <main className="bonus-container">
       {/* Bonus header */}
       <header className="bonus-header">
         <section className="bonus-header-text">
           <span>Hottest Crypto Bonuses & Rewards</span>
-          <p>Get your exclusive rewards at the largest community for your crypto rewards and bonuses from all major crypto websites.</p>
+          <p>
+            Get your exclusive rewards at the largest community for your crypto
+            rewards and bonuses from all major crypto websites.
+          </p>
         </section>
       </header>
 
       {/* Bonus list wrapper */}
       <section className="bonus-list-wrapper min-w-[320px]">
-        {bonusData?.length > 0 &&
-          bonusData.map((each, i) => {
+        {bonusesData?.length > 0 &&
+          bonusesData?.map((each:any, i:number) => {
             return (
               <Bonus
                 tele={tele}
