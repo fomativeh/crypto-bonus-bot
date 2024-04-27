@@ -175,9 +175,8 @@ const NewBonus = () => {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      console.log(newBonusData);
-      alert("Please fill all fields.");
-      return;
+    //   console.log(newBonusData);
+      return alert("Please fill all fields.");
     }
 
     try {
@@ -228,7 +227,7 @@ const NewBonus = () => {
                 placeholder="Find a bonus..."
               />
               <button
-                className="w-[20%] text-[12px] px-[3px] h-[70%] rounded-[5px] bg-white text-black"
+                className="ml-[5px] w-[20%] text-[12px] px-[5px] h-full rounded-[5px] bg-white text-black"
                 onClick={() => setIsCreatingNewBonus(true)}
               >
                 New Bonus
@@ -262,7 +261,7 @@ const NewBonus = () => {
       )}
 
       {isCreatingNewBonus && (
-        <form className="mt-[20px] w-[95vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]">
+        <form onSubmit={(e)=>e.preventDefault()} className="mt-[20px] w-[95vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]">
           <span className="block text-white bg-black rounded-[10px] px-[10px] py-[15px] mb-[20px]">
             {isEditing ? "Edit bonus" : "Add new bonus"}
           </span>
