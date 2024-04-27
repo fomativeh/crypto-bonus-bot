@@ -117,12 +117,13 @@ const Home = () => {
       {/* Bonus header */}
       <header className="bonus-header">
         <section className="bonus-header-text">
-          Top Crypto Sign-Up Bonus Offers & Promotions
+          <span>Hottest Crypto Bonuses & Rewards</span>
+          <p>Get your exclusive rewards at the largest community for your crypto rewards and bonuses from all major crypto websites.</p>
         </section>
       </header>
 
       {/* Bonus list wrapper */}
-      <section className="bonus-list-wrapper min-w-[400px]">
+      <section className="bonus-list-wrapper min-w-[320px]">
         {bonusData?.length > 0 &&
           bonusData.map((each, i) => {
             return (

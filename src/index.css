@@ -50,25 +50,36 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #000000;
   z-index: 5;
   padding: 20px 0px;
 }
 
 .bonus-header-text {
-  border-radius: 10px;
-  background-color: #ffa631;
-  font-family: Inter;
-  font-weight: 500;
-  color: #ffffff;
-  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: #000;
   text-align: center;
-  width: 90%;
+
+  span{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 20px;
+    max-width: 400px;
+  }
+
+  p{
+    color: silver;
+  }
 }
 
 .bonus-list-wrapper {
-  margin-top: 100px;
-  width: 90%;
+  margin-top: 140px;
+  width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
