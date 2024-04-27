@@ -224,11 +224,11 @@ const NewBonus = () => {
             <section className="flex justify-between items-center h-[70%] w-full max-w-[500px] px-[10px]">
               <input
                 type="text"
-                className="h-full border-[1px] outline-none text-white bg-transparent border-white rounded-[10px] pl-[10px] w-[75%] min-w-[280px]"
+                className="h-full border-[1px] outline-none text-white bg-transparent border-white rounded-[10px] pl-[10px] w-[60%] min-w-[280px]"
                 placeholder="Find a bonus..."
               />
               <button
-                className="w-[20%] text-[14px] h-[70%] rounded-[5px] bg-white text-black"
+                className="w-[20%] text-[12px] px-[3px] h-[70%] rounded-[5px] bg-white text-black"
                 onClick={() => setIsCreatingNewBonus(true)}
               >
                 New Bonus
@@ -262,7 +262,7 @@ const NewBonus = () => {
       )}
 
       {isCreatingNewBonus && (
-        <form className="mt-[20px] w-[100vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]">
+        <form className="mt-[20px] w-[95vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]">
           <span className="block text-white bg-black rounded-[10px] px-[10px] py-[15px] mb-[20px]">
             {isEditing ? "Edit bonus" : "Add new bonus"}
           </span>
