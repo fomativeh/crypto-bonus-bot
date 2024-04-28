@@ -8,6 +8,7 @@ const { v1: uuidv1 } = require("uuid");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Bonus = require("./models/bonusModel");
+const User = require("./models/userModel");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const limitConfig = {
@@ -34,23 +35,46 @@ app.get("/", (req, res) => {
 });
 
 app.post("/bonus", async (req, res) => {
-  const { exchange, bannerUrl, bonusLink, status, name, description, couponCode } =
-    req.body;
+  const { bannerUrl, bonusUrl, status, description, couponCode } = req.body;
 
   try {
     const newBonus = new Bonus({
-      exchange,
       bannerUrl,
-      bonusLink,
+      bonusUrl,
       status,
-      name,
       description,
-      couponCode
+      couponCode,
     });
 
     await newBonus.save();
 
-    res.status(200).json({ success: true});
+    const allUsers = await User.find();
+
+    const replyText = `    
+*${newBonus.description}*
+    
+Status: *${newBonus.status.toUpperCase()}*
+    
+Coupon code: *${newBonus.couponCode}*
+    
+[Click me to view](${bonusUrl})`;
+
+//Announce to all users
+allUsers.forEach(async (eachUser) => {
+      await bot.telegram.sendPhoto(
+        eachUser.chatId, // Replace with the chat ID where you want to send the photo
+        { url: newBonus.bannerUrl }, // Specify the photo URL
+        { caption: replyText, parse_mode: "Markdown" } // Specify the caption
+      );
+});
+
+await bot.telegram.sendPhoto(
+      "@dailycryptobonus_test", // Replace with the chat ID where you want to send the photo
+      { url: newBonus.bannerUrl }, // Specify the photo URL
+      { caption: replyText, parse_mode: "Markdown" } // Specify the caption
+);
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
@@ -70,8 +94,6 @@ app.get("/bonuses", async (req, res) => {
 
 app.patch("/bonus/:id", async (req, res) => {
   const { id } = req.params;
-  const { updateDetails } = req.body;
-
   if (!id) {
     return res.json({ success: false, error: "Bonus id is required." });
   }
@@ -82,17 +104,19 @@ app.patch("/bonus/:id", async (req, res) => {
       return res.json({ success: false, error: "Bonus not found." });
     }
 
-    await bonusData.updateOne({ $set: updateDetails });
+    const updated = await bonusData.updateOne({ $set: req.body });
+    console.log(updated);
 
-    const latestBonuses = await Bonus.find();
+    if (!updated) {
+      return res.json({ success: false, error: "Could not update bonus." });
+    }
 
-    res.status(200).json({ success: true, data: latestBonuses });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
   }
 });
-
 
 app.delete("/bonus/:id", async (req, res) => {
   const { id } = req.params;
@@ -107,7 +131,7 @@ app.delete("/bonus/:id", async (req, res) => {
       return res.json({ success: false, error: "Couldn't delete doc." });
     }
 
-    res.status(200).json({ success: true, message:"Bonus deleted" });
+    res.status(200).json({ success: true, message: "Bonus deleted" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
@@ -126,13 +150,21 @@ mongoose
   .catch((error) => console.log(error));
 
 bot.start(async (ctx) => {
-  const replyText = `Welcome to crypto bonus bot.\n\nClick the button below to start the mini app`;
+  const { id } = ctx.from;
+
+  //check if user already exists
+  const userExists = await User.findOne({ chatId: id });
+  if (!userExists) {
+    const newUser = new User({ chatId: id });
+    await newUser.save();
+  }
+  const replyText = `Welcome to crypto bonus bot.\n\nClick the button below to see amazing offers.`;
   ctx.reply(replyText, {
     reply_markup: {
       inline_keyboard: [
         [
           {
-            text: "Launch mini app",
+            text: "Get your Bonus Now",
             web_app: {
               url: "https://crypto-bonus-bot.vercel.app",
             },

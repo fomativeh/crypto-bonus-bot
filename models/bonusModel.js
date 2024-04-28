@@ -2,11 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const bonusSchema = new Schema(
   {
-    exchange: String,
     bannerUrl: String,
-    bonusLink: String,
+    bonusUrl: String,
     status: String,
-    name: String,
     description: String,
     couponCode:String
   },
