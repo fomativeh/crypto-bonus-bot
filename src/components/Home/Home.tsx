@@ -22,6 +22,8 @@ const Bonus = ({
   couponCode,
   tele,
 }: BonusProps) => {
+
+  let url = !bonusUrl.startsWith("http") && "https://"+bonusUrl
   return (
     <section className="my-[8px] w-full flex justify-between items-center h-[130px] shadow-c">
       <figure className="w-[30%] h-full">
@@ -46,7 +48,7 @@ const Bonus = ({
         </span>
         <span
           className="cursor-pointer bg-[#3bb43b] text-[#fff] font-bold text-[14px] rounded-[5px] px-[10px] py-[10px] mr-[5px]"
-          onClick={() => tele.openLink(bonusUrl)}
+          onClick={() => {tele.openLink(url)}}
         >
           Get Bonus
         </span>
@@ -72,6 +74,8 @@ const Home = () => {
       if (!bonusesRes?.success) {
         // alert("An error occured.");
       } else {
+        console.log(bonusesRes.data)
+
         setBonusesData(bonusesRes.data);
       }
     } catch (error) {
@@ -89,8 +93,8 @@ const Home = () => {
       {/* Bonus header */}
       <header className="bonus-header">
         <section className="bonus-header-text">
-          <span>Hottest Crypto Bonuses & Rewards</span>
-          <p>
+          <span className="max-w-[90vw]">Hottest Crypto Bonuses & Rewards</span>
+          <p className="max-w-[90vw]">
             Get your exclusive rewards at the largest community for your crypto
             rewards and bonuses from all major crypto websites.
           </p>
