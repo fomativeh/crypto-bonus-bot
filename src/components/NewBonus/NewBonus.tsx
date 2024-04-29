@@ -19,6 +19,8 @@ type BonusProps = {
   bonusUrl: string;
   bonusTitle?: string;
   couponCode?: string;
+  announcementText?:string,
+  linkText?:string,
   tele: any;
   setIsEditing: Dispatch<SetStateAction<Boolean>>;
   setIsCreatingNewBonus: Dispatch<SetStateAction<Boolean>>;
@@ -35,6 +37,8 @@ const Bonus = memo(
     description,
     bonusUrl,
     couponCode,
+    announcementText,
+    linkText,
     tele,
     setIsCreatingNewBonus,
     setIsEditing,
@@ -78,6 +82,8 @@ const Bonus = memo(
                   bonusUrl,
                   bannerUrl,
                   couponCode,
+                  announcementText,
+                  linkText,
                 });
               }}
             >
@@ -110,8 +116,7 @@ const NewBonus = () => {
     loadBonuses();
   }, []);
 
-  const [bonusesData, setBonusesData] = useState([
-  ]);
+  const [bonusesData, setBonusesData] = useState([]);
 
   const [isCreatingNewBonus, setIsCreatingNewBonus] = useState<Boolean>(false);
   const [isEditing, setIsEditing] = useState<Boolean>(false);
@@ -140,6 +145,8 @@ const NewBonus = () => {
     description: "",
     bannerUrl: "",
     bonusUrl: "",
+    announcementText: "",
+    linkText: "",
   };
 
   const [newBonusData, setNewBonusData] = useState<any>(initialState);
@@ -175,7 +182,7 @@ const NewBonus = () => {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-    //   console.log(newBonusData);
+      //   console.log(newBonusData);
       return alert("Please fill all fields.");
     }
 
@@ -253,6 +260,8 @@ const NewBonus = () => {
                     id={each?._id}
                     deleteBonus={deleteBonus}
                     setNewBonusData={setNewBonusData}
+                    announcementText={each.announcementText}
+                    linkText={each.linkText}
                   />
                 );
               })}
@@ -261,7 +270,10 @@ const NewBonus = () => {
       )}
 
       {isCreatingNewBonus && (
-        <form onSubmit={(e)=>e.preventDefault()} className="mt-[20px] w-[95vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="my-[20px] w-[95vw] max-w-[700px] flex flex-col justify-start items-start shadow-c py-[20px] px-[15px] rounded-[12px]"
+        >
           <span className="block text-white bg-black rounded-[10px] px-[10px] py-[15px] mb-[20px]">
             {isEditing ? "Edit bonus" : "Add new bonus"}
           </span>
@@ -286,7 +298,7 @@ const NewBonus = () => {
           />
           <input
             type="text"
-            placeholder="Bonus url"
+            placeholder="Bonus Url (external bonus link)"
             className="w-full rounded-[8px] border-[2px] border-[#505050] outline-none h-[40px] pl-[10px] my-[15px]"
             onChange={(e) =>
               setNewBonusData({ ...newBonusData, bonusUrl: e.target.value })
@@ -295,7 +307,7 @@ const NewBonus = () => {
           />
           <input
             type="text"
-            placeholder="Banner url"
+            placeholder="Banner Url (link to bonus image)"
             className="w-full rounded-[8px] border-[2px] border-[#505050] outline-none h-[40px] pl-[10px] my-[15px]"
             onChange={(e) =>
               setNewBonusData({ ...newBonusData, bannerUrl: e.target.value })
@@ -310,6 +322,25 @@ const NewBonus = () => {
               setNewBonusData({ ...newBonusData, couponCode: e.target.value })
             }
             value={newBonusData.couponCode}
+          />
+
+          <textarea
+            placeholder="Announcement message"
+            className="w-full max-w-full min-w-full max-h-[100px] min-h-[40px] rounded-[8px] border-[2px] border-[#505050] outline-none h-[80px] p-[10px] my-[15px]"
+            onChange={(e) =>
+              setNewBonusData({ ...newBonusData, announcementText: e.target.value })
+            }
+            value={newBonusData.announcementText}
+          />
+
+          <input
+            type="text"
+            placeholder="Link Text (Users click this to view the bonus)"
+            className="w-full rounded-[8px] border-[2px] border-[#505050] outline-none h-[40px] pl-[10px] my-[15px]"
+            onChange={(e) =>
+              setNewBonusData({ ...newBonusData, linkText: e.target.value })
+            }
+            value={newBonusData.linkText}
           />
 
           <section className="flex w-full justify-center items-center">
@@ -327,8 +358,10 @@ const NewBonus = () => {
                 if (isEditing) {
                   setIsCreatingNewBonus(false);
                   setIsEditing(false);
+                  setNewBonusData(initialState)
                 } else {
                   setIsCreatingNewBonus(false);
+                  setNewBonusData(initialState)
                 }
               }}
             >
