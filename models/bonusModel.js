@@ -6,7 +6,9 @@ const bonusSchema = new Schema(
     bonusUrl: String,
     status: String,
     description: String,
-    couponCode:String
+    couponCode:String,
+    announcementText:String,
+    linkText:String
   },
   { timestamps: true }
 );

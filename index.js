@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/bonus", async (req, res) => {
-  const { bannerUrl, bonusUrl, status, description, couponCode } = req.body;
+  const { bannerUrl, bonusUrl, status, description, couponCode, linkText, announcementText } = req.body;
 
   try {
     const newBonus = new Bonus({
@@ -44,35 +44,46 @@ app.post("/bonus", async (req, res) => {
       status,
       description,
       couponCode,
+      announcementText,
+      linkText,
     });
 
     await newBonus.save();
 
     const allUsers = await User.find();
 
-    const replyText = `    
+    //Uses provided link text, or default text if absent
+    const customLinkText = newBonus.linkText
+      ? newBonus.linkText
+      : "Press here to claim your bonus";
+
+    //Uses provided reply message, or default text if absent
+    const replyTextPart1 = newBonus.announcementText
+      ? newBonus.announcementText
+      : `    
 *${newBonus.description}*
     
 Status: *${newBonus.status.toUpperCase()}*
     
-Coupon code: *${newBonus.couponCode}*
-    
-[Click me to view](${bonusUrl})`;
+Coupon code: *${newBonus.couponCode}*`;
 
-//Announce to all users
-allUsers.forEach(async (eachUser) => {
+    const replyTextPart2 = `\n\n[${customLinkText}](${bonusUrl})`;
+
+    const replyText = replyTextPart1 + replyTextPart2 + `\n\n[For more bonuses, click here](t.me/cryptobonus_livebot)`
+    //Announce to all users
+    allUsers.forEach(async (eachUser) => {
       await bot.telegram.sendPhoto(
         eachUser.chatId, // Replace with the chat ID where you want to send the photo
         { url: newBonus.bannerUrl }, // Specify the photo URL
         { caption: replyText, parse_mode: "Markdown" } // Specify the caption
       );
-});
+    });
 
-await bot.telegram.sendPhoto(
+    await bot.telegram.sendPhoto(
       "@dailycryptobonus_test", // Replace with the chat ID where you want to send the photo
       { url: newBonus.bannerUrl }, // Specify the photo URL
       { caption: replyText, parse_mode: "Markdown" } // Specify the caption
-);
+    );
 
     res.status(200).json({ success: true });
   } catch (error) {
